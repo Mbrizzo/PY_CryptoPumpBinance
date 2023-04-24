@@ -1,5 +1,6 @@
 import requests
 import time
+import pandas as pd
 
 # Define o par de criptomoedas para obter as informações
 symbol = 'BTCUSDT'
@@ -31,10 +32,17 @@ if response.status_code == 200:
         f.write(f" Volume das últimas 2 horas{last_2_hours_volume}\n")
         f.write(f" Variação percentual{pct_change}")
 
-
+   # Adiciona os novos dados ao DataFrame
+    df = pd.DataFrame({
+    'volume de 2h atrás': pd.Series([last_2_hours_volume]),
+    'variação': pd.Series([pct_change])
+})
     # Imprime as informações
     print(f'Par de criptomoedas: {symbol}')
     print(f'Variação percentual no volume nas últimas 2 horas: {pct_change:.2f}%')
     print(f'Volume das últimas 2 horas: {last_2_hours_volume:.2f}')
 else:
     print(f'Erro: {response.status_code}/n')
+
+# Grava os dados no arquivo CSV
+df.to_csv('volume.csv', mode='a', index=False, header=False)
