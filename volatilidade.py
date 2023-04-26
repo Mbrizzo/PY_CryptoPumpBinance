@@ -1,12 +1,10 @@
-import numpy as np
-import pandas as pd
 import requests
+import json
+import math
 
-# Normalmente se usa volatilidade histórica para fazer esse cálculo, mas para o que eu* pretendo fazer é mais viável calcular o desvio padrão das últimas velas.
-fechamento = pd.Series([10.00, 10.50, 11.00, 10.75, 10.80, 10.90, 11.20, 11.50, 11.80, 12.00])
 
-# Cálculo do desvio padrão dos preços de fechamento
-volatilidade= np.std(fechamento)
+response = requests.get('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1h&limit=10')
+data = json.loads(response.text)
+close_prices = [float(d[4]) for d in data]
 
-print("Desvio padrão dos preços de fechamento: ", volatilidade)
-
+print(close_prices)

@@ -36,4 +36,6 @@ def atualizar_dados():
     
     df['price_pct_change'] = (df['price'] - df['price_mme']) / df['price_mme'] * 100
 
-    
+while True:
+    atualizar_dados()
+    time.sleep(3600) 
