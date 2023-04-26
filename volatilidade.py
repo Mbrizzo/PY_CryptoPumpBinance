@@ -3,8 +3,17 @@ import json
 import math
 
 
-response = requests.get('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=10')
+symbol = 'BTCUSDT'
+interval = '1h'
+
+url = f'https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit=10'
+response = requests.get(url)
 data = json.loads(response.text)
+
+# Debugging
+print(data) # imprime a lista de candlesticks
+print(len(data)) # imprime o tamanho da lista de candlesticks
+
 close_prices = [float(d[4]) for d in data]
 
 mean = sum(close_prices) / len(close_prices)
