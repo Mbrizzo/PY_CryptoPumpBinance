@@ -7,4 +7,8 @@ response = requests.get('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&in
 data = json.loads(response.text)
 close_prices = [float(d[4]) for d in data]
 
-print(close_prices)
+mean = sum(close_prices) / len(close_prices)
+variance = sum([((x - mean) ** 2) for x in close_prices]) / len(close_prices)
+volatility = math.sqrt(variance)
+
+print(volatility)
