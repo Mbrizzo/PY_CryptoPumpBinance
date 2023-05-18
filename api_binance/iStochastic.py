@@ -23,3 +23,8 @@ def get_pairs():
 
 get_pairs = get_pairs()
 print(get_pairs)
+file = open('pair_usdt.txt', 'w')
+for pair in get_pairs:
+    file.write(pair + '\n')
+
+file.close()
