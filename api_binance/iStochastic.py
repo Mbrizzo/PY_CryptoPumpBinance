@@ -1,30 +1,15 @@
 import requests
+import numpy as np
 
-from dotenv import load_dotenv
-import os
-
-api_key = os.getenv('API_KEY')
-api_secret = os.getenv('API_SECRET')
-base_url = 'https://api.binance.com'
-
-def get_pairs():
-    endpoint = '/api/v3/exchangeInfo'
-    url = base_url + endpoint
-
+def get_close_prices(trading_pair):
+    url = f"https://api.binance.com/api/v3/klines?symbol={trading_pair}&interval=1m&limit=14"
     response = requests.get(url)
-    response.raise_for_status()
+    
+    response.status_code == 200
+    kline_data = response.json()      
+    close_prices = np.array([float(data[4]) for data in kline_data])
 
-    trading_pairs = []
-    for symbol in response.json()['symbols']:
-        if symbol['quoteAsset'] == 'USDT':
-            trading_pairs.append(symbol['symbol'])
+    return close_prices
 
-    return trading_pairs
-
-get_pairs = get_pairs()
-print(get_pairs)
-file = open('pair_usdt.txt', 'w')
-for pair in get_pairs:
-    file.write(pair + '\n')
-
-file.close()
+prices = get_close_prices('BTCUSDT')
+print(prices)
